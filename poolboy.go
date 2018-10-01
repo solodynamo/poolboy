@@ -1,6 +1,7 @@
 package poolboy;
 
 import (
+	"log"
 	"sync"
 	"math"
 	"runtime"
@@ -28,6 +29,7 @@ type Pool struct {
 	launchSignal chan Signal
 	capacity int32
 	running int32
+	logFunc func(message string)
 };
 
 type DLL struct {
@@ -36,8 +38,22 @@ type DLL struct {
 }
 
 const DEFAULT_ROUTINE_POOL_SIZE = math.MaxInt32;
-var gopherPool = NewPool(DEFAULT_ROUTINE_POOL_SIZE);
 
+func logFunc(message string) {
+	log.Println(message)
+}
+var once sync.Once
+
+func getIntOnce() *Pool{
+	var gpool * Pool
+	once.Do(func() {
+		log.Println("Initializing Pool")
+		gpool = NewPool(DEFAULT_ROUTINE_POOL_SIZE,logFunc)
+	})
+	return gpool
+}
+
+var gopherPool = getIntOnce()
 
 func (w *Worker) run() {
 	go func() {
@@ -63,6 +79,21 @@ func (w *Worker) sendTask(task fun) {
 	w.task <- task
 }
 
+func NewPool(size int32, logFunc func(message string)) *Pool {
+	p := &Pool{
+		capacity: size,
+		tasks: NewDLL(),
+		workers: NewDLL(),
+		freeSignal:   make(chan Signal, math.MaxInt32),
+		launchSignal: make(chan Signal, math.MaxInt32),
+		destroy: make(chan Signal, runtime.GOMAXPROCS(-1)),
+		wg:           &sync.WaitGroup{},
+		logFunc:logFunc,
+	};
+	p.loop();
+	return p;
+}
+
 func Push(task fun) error {
 	return gopherPool.Push(task)
 }
@@ -83,19 +114,6 @@ func FreeGopherSwimmers() int {
 	return gopherPool.Free()
 }
 
-func NewPool(size int32) *Pool {
-	p := &Pool{
-		capacity: size,
-		tasks: NewDLL(),
-		workers: NewDLL(),
-		freeSignal:   make(chan Signal, math.MaxInt32),
-		launchSignal: make(chan Signal, math.MaxInt32),
-		destroy: make(chan Signal, runtime.GOMAXPROCS(-1)),
-		wg:           &sync.WaitGroup{},
-	};
-	p.loop(); 
-	return p;
-}
 
 func (p *Pool) loop() {
 	/*
@@ -202,4 +220,10 @@ func (p *Pool) PutWorker(worker *Worker) {
 		return q.doublylinkedlist.Remove(elem)
 	}
 	return nil
+}
+
+func (p *Pool) log(message string) {
+	if p.logFunc != nil {
+		p.logFunc(message)
+	}
 }
