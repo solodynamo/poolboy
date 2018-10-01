@@ -5,3 +5,6 @@
     <br>
     <br>
 </h1>
+
+- To run benchmark := go test -test.bench=<benchmarkfnname>
+- To run tests := go test -v

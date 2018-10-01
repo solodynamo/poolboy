@@ -3,15 +3,16 @@ package poolboy_test;
 import (
 	"testing"
 	"github.com/solodynamo/poolboy"
-	"fmt"
 	"runtime"
+	"fmt"
 )
 
-var n = 100000;
+var n = 500000;
 
 func doLotOfWorkFun() {
-	for i := 0; i < 1000000; i++ {
-
+	var n int
+	for i := 0; i < 10000; i++ {
+		n += i
 	}
 }
 
@@ -19,10 +20,12 @@ func TestGopherPool(t *testing.T) {
 	for i := 0; i < n; i++ {
 		poolboy.Push(doLotOfWorkFun)
 	}
- 	t.Logf("PoolCapacity:%d", poolboy.PoolCapacity())
-	t.Logf("SwimmingGophers:%d", poolboy.SwimmingGophers())
-	t.Logf("FreeGopherSwimmers:%d", poolboy.FreeGopherSwimmers())
+	fmt.Println("____Stats____");
+ 	t.Log("PoolCapacity", poolboy.PoolCapacity())
+	t.Log("SwimmingGophers", poolboy.SwimmingGophers())
+	t.Log("FreeGopherSwimmers", poolboy.FreeGopherSwimmers())
+	poolboy.WaitingGophers();
  	mem := runtime.MemStats{}
 	runtime.ReadMemStats(&mem)
-	fmt.Println("memory usage:", mem.TotalAlloc/1024)
+	t.Log("memory usage:", mem.TotalAlloc/1024)
 }

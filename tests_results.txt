@@ -1,0 +1,14 @@
+2 oct 3:09 AM
+
+=== RUN   TestGopherPool
+____Stats____
+--- PASS: TestGopherPool (1.09s)
+        poolboy_test.go:24: PoolCapacity 2147483647
+        poolboy_test.go:25: SwimmingGophers 114354
+        poolboy_test.go:26: FreeGopherSwimmers 2147369293
+        poolboy_test.go:30: memory usage: 62948
+PASS
+ok      github.com/solodynamo/poolboy   1.099s
+
+
+Description: Resources used for 5lac routines.
