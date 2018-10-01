@@ -4,7 +4,7 @@
 goos: darwin
 goarch: amd64
 pkg: github.com/solodynamo/poolboy
-BenchmarkGoroutine-4           1        5943860586 ns/op
+BenchmarkGoroutineWithoutPoolBoy-4           1        5943860586 ns/op
 PASS
 ok      github.com/solodynamo/poolboy   7.100s
 
@@ -14,9 +14,19 @@ Summary :- Without poolboy 1cr go routines ran with speed of five billion nine h
 goos: darwin
 goarch: amd64
 pkg: github.com/solodynamo/poolboy
-BenchmarkPoolGoroutine-4               1        12978504317 ns/op
+BenchmarkGoroutineWithPoolBoy-4               1        12978504317 ns/op
 PASS
 ok      github.com/solodynamo/poolboy   14.195s
 
 
 Summary:- With poolboy 1cr go routines ran with speed of twelve billion nine hundred seventy-eight million five hundred four thousand three hundred seventeen !! Yeah
+
+>BenchmarkGoroutineWithPoolBoy
+ goos: darwin
+ goarch: amd64
+ pkg: github.com/solodynamo/poolboy
+ BenchmarkGoroutineWithPoolBoy-4                1        12342290999 ns/op
+ PASS
+ ok      github.com/solodynamo/poolboy   13.501s
+
+Summary:- Limit the no of OS threads wrt to the CPU cores.

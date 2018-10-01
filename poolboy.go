@@ -44,8 +44,13 @@ func logFunc(message string) {
 }
 var once sync.Once
 
+func limitThreadsAccToCPUCores() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+}
+
 func getIntOnce() *Pool{
 	var gpool * Pool
+	limitThreadsAccToCPUCores()
 	once.Do(func() {
 		log.Println("Initializing Pool")
 		gpool = NewPool(DEFAULT_ROUTINE_POOL_SIZE,logFunc)
