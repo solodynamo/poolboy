@@ -3,6 +3,7 @@ package poolboy
 import (
 	"fmt"
 	"sync/atomic"
+	"time"
 )
 
 type WorkerFunc interface {
@@ -16,6 +17,7 @@ type Worker struct {
 	pool *Pool
 	task chan fun
 	exit chan Signal
+	recycleTime time.Time
 }
 
 func (w *Worker) run() {
@@ -23,6 +25,7 @@ func (w *Worker) run() {
 		for {
 			select {
 			case f := <-w.task:
+				w.recycleTime = time.Now()
 				f()
 				w.pool.workers <- w
 				atomic.AddInt32(&w.pool.running, 1)

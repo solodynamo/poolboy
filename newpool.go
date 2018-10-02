@@ -8,6 +8,7 @@ import (
 
 type PoolFunc interface {
 	// API
+	Release()
 	Running() int
 	Free() int
 	Push(fn func()) error
@@ -16,11 +17,12 @@ type PoolFunc interface {
 	Wait()
 
 	// Internals
-	loop()
-	reachLimit() bool
-	newWorker() *Worker
 	getWorker() *Worker
+	loop()
 	log(message string)
+	newWorker() *Worker
+	purgeWorkers()
+	reachLimit() bool
 }
 
 type Pool struct {
@@ -28,6 +30,7 @@ type Pool struct {
 	workers    chan *Worker
 	destroy    chan Signal
 	statTime   time.Duration // time to display stats.
+	purgeWorkerTime time.Duration
 	mx         *sync.Mutex
 	wg         *sync.WaitGroup
 	freeSignal chan Signal

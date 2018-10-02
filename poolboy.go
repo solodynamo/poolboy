@@ -104,6 +104,20 @@ func (p *Pool) loop() {
 	}
 }
 
+func (p *Pool) Release() {
+		p.mx.Lock()
+		idleWorkers := p.workers
+		if len(idleWorkers) == 0 && p.Running() == 0 {
+			p.mx.Unlock()
+			return
+		}
+
+		for w := range idleWorkers {
+			w.stop()
+		}
+		p.mx.Unlock()
+}
+
 func (p *Pool) reachLimit() bool {
 	return p.Running() >= p.Capacity()
 }
