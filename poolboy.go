@@ -23,16 +23,16 @@ type Worker struct {
 }
 
 type Pool struct {
-	tasks        *DLL
-	workers      *DLL
+	tasks        chan fun
+	workers      chan *Worker
 	destroy      chan Signal
 	statTime    time.Duration  // time to display stats.
 	mx           *sync.Mutex
 	wg           *sync.WaitGroup
 	freeSignal   chan Signal
-	launchSignal chan Signal
 	capacity     int32
 	running      int32
+	stopped      int32
 	logFunc      func(message string)
 }
 
@@ -82,12 +82,11 @@ func (w *Worker) run() {
 			select {
 			case f := <-w.task:
 				f()
-				w.pool.workers.push(w)
+				w.pool.workers <- w
 				atomic.AddInt32(&w.pool.running,1)
 				if atomic.AddInt32(&w.pool.running, 0) == w.pool.capacity {
 					fmt.Println(ErrCapacity)
 				}
-				w.pool.wg.Done()
 			case <-w.exit:
 				atomic.AddInt32(&w.pool.running, -1)
 				return
@@ -115,14 +114,15 @@ func NewPool(size int32, statTime time.Duration, logFunc func(message string)) (
 
 	p := &Pool{
 		capacity:     size,
-		tasks:        NewDLL(),
-		workers:      NewDLL(),
+		tasks:        make(chan fun, size),
+		workers:      make(chan *Worker, size),
 		freeSignal:   make(chan Signal, math.MaxInt32),
-		launchSignal: make(chan Signal, math.MaxInt32),
-		destroy:      make(chan Signal, runtime.GOMAXPROCS(-1)),
+		destroy:      make(chan Signal),
 		statTime:    statTime,
 		wg:           &sync.WaitGroup{},
 		logFunc:      logFunc,
+		running: 0,
+		stopped: 0,
 	}
 	p.loop()
 	return p,nil
@@ -158,12 +158,8 @@ func (p *Pool) loop() {
 			timer := time.NewTimer(p.statTime)
 			for {
 				select {
-				case <-p.launchSignal:
-					noOfTasks := p.tasks.doublylinkedlist.Len()
-					if noOfTasks <= 0 {
-						panic(ErrNoTaskInQ)
-					}
-					p.getWorker().sendTask(p.tasks.pop().(fun))
+				case task := <-p.tasks:
+					p.getWorker().sendTask(task)
 
 				case <-p.destroy:
 					return
@@ -196,9 +192,7 @@ func (p *Pool) Push(task fun) error {
 	if len(p.destroy) > 0 {
 		return nil
 	}
-	p.tasks.push(task)
-	p.launchSignal <- Signal{}
-	p.wg.Add(1)
+	p.tasks <- task
 	return nil
 }
 
@@ -240,36 +234,18 @@ func (p *Pool) newWorker() *Worker {
 
 func (p *Pool) getWorker() *Worker {
 	defer atomic.AddInt32(&p.running, 1)
-	if w := p.workers.pop(); w != nil {
-		return w.(*Worker)
-	}
-	return p.newWorker()
-}
-
-func (p *Pool) PutWorker(worker *Worker) {
-	p.workers.push(worker)
+	var worker *Worker
 	if p.reachLimit() {
-		p.freeSignal <- Signal{}
+		worker = <-p.workers
+	} else {
+		select {
+		case worker = <-p.workers:
+			return worker
+		default:
+			worker = p.newWorker()
+		}
 	}
-}
-
-func NewDLL() *DLL {
-	q := new(DLL)
-	q.doublylinkedlist = list.New()
-	return q
-}
-func (q *DLL) push(v interface{}) {
-	defer q.m.Unlock()
-	q.m.Lock()
-	q.doublylinkedlist.PushFront(v)
-}
-func (q *DLL) pop() interface{} {
-	defer q.m.Unlock()
-	q.m.Lock()
-	if elem := q.doublylinkedlist.Back(); elem != nil {
-		return q.doublylinkedlist.Remove(elem)
-	}
-	return nil
+	return worker
 }
 
 func (p *Pool) log(message string) {
