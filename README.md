@@ -10,3 +10,4 @@
 - To run tests := go test -v
 
 - To do : Clean routines after defined intervals.
+- To do : use sync.Pool as allocating many objects of the same type
