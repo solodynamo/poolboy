@@ -30,3 +30,111 @@ Summary:- With poolboy 1cr go routines ran with speed of twelve billion nine hun
  ok      github.com/solodynamo/poolboy   13.501s
 
 Summary:- Limit the no of OS threads wrt to the CPU cores.
+
+
+------------------------------------------------------------------------------------
+>BenchmarkGoroutineWithoutPoolBoy
+2018/10/02 20:32:28 Initializing Pool
+____Stats____
+TRACE: 2018/10/02 20:32:29 poolboy.go:55: Pool : Stats : A[992001] C[2147483647]
+TRACE: 2018/10/02 20:32:29 poolboy.go:55: Pool : Stats : A[995642] C[2147483647]
+TRACE: 2018/10/02 20:32:29 poolboy.go:55: Pool : Stats : A[996129] C[2147483647]
+TRACE: 2018/10/02 20:32:29 poolboy.go:55: Pool : Stats : A[998794] C[2147483647]
+TRACE: 2018/10/02 20:32:30 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:30 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:30 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:30 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:31 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:31 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:31 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:31 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:32 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:32 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:32 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:32 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:33 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:33 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:33 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:33 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:34 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:34 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:34 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:34 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:35 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:35 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:35 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+TRACE: 2018/10/02 20:32:35 poolboy.go:55: Pool : Stats : A[1000000] C[2147483647]
+goos: darwin
+goarch: amd64
+pkg: github.com/solodynamo/poolboy
+BenchmarkGoroutineWithoutPoolBoy-4             1        6173339955 ns/op
+PASS
+ok      github.com/solodynamo/poolboy   7.343s
+
+> BenchmarkGoroutineWithPoolBoy
+2018/10/02 20:33:48 Initializing Pool
+____Stats____
+TRACE: 2018/10/02 20:33:49 poolboy.go:55: Pool : Stats : A[988978] C[2147483647]
+TRACE: 2018/10/02 20:33:49 poolboy.go:55: Pool : Stats : A[989144] C[2147483647]
+TRACE: 2018/10/02 20:33:49 poolboy.go:55: Pool : Stats : A[992779] C[2147483647]
+TRACE: 2018/10/02 20:33:49 poolboy.go:55: Pool : Stats : A[996756] C[2147483647]
+TRACE: 2018/10/02 20:33:50 poolboy.go:55: Pool : Stats : A[2154854] C[2147483647]
+TRACE: 2018/10/02 20:33:50 poolboy.go:55: Pool : Stats : A[2155760] C[2147483647]
+TRACE: 2018/10/02 20:33:50 poolboy.go:55: Pool : Stats : A[2178293] C[2147483647]
+TRACE: 2018/10/02 20:33:50 poolboy.go:55: Pool : Stats : A[2178297] C[2147483647]
+TRACE: 2018/10/02 20:33:51 poolboy.go:55: Pool : Stats : A[3258550] C[2147483647]
+TRACE: 2018/10/02 20:33:51 poolboy.go:55: Pool : Stats : A[3258830] C[2147483647]
+TRACE: 2018/10/02 20:33:51 poolboy.go:55: Pool : Stats : A[3260880] C[2147483647]
+TRACE: 2018/10/02 20:33:51 poolboy.go:55: Pool : Stats : A[3260899] C[2147483647]
+TRACE: 2018/10/02 20:33:52 poolboy.go:55: Pool : Stats : A[4513879] C[2147483647]
+TRACE: 2018/10/02 20:33:52 poolboy.go:55: Pool : Stats : A[4514196] C[2147483647]
+TRACE: 2018/10/02 20:33:52 poolboy.go:55: Pool : Stats : A[4516332] C[2147483647]
+TRACE: 2018/10/02 20:33:52 poolboy.go:55: Pool : Stats : A[4516598] C[2147483647]
+TRACE: 2018/10/02 20:33:53 poolboy.go:55: Pool : Stats : A[5717269] C[2147483647]
+TRACE: 2018/10/02 20:33:53 poolboy.go:55: Pool : Stats : A[5737262] C[2147483647]
+TRACE: 2018/10/02 20:33:53 poolboy.go:55: Pool : Stats : A[5758608] C[2147483647]
+TRACE: 2018/10/02 20:33:53 poolboy.go:55: Pool : Stats : A[5758617] C[2147483647]
+TRACE: 2018/10/02 20:33:54 poolboy.go:55: Pool : Stats : A[6619868] C[2147483647]
+TRACE: 2018/10/02 20:33:54 poolboy.go:55: Pool : Stats : A[6649217] C[2147483647]
+TRACE: 2018/10/02 20:33:54 poolboy.go:55: Pool : Stats : A[6666961] C[2147483647]
+TRACE: 2018/10/02 20:33:54 poolboy.go:55: Pool : Stats : A[6667557] C[2147483647]
+TRACE: 2018/10/02 20:33:55 poolboy.go:55: Pool : Stats : A[8155971] C[2147483647]
+TRACE: 2018/10/02 20:33:55 poolboy.go:55: Pool : Stats : A[8173013] C[2147483647]
+TRACE: 2018/10/02 20:33:55 poolboy.go:55: Pool : Stats : A[8193615] C[2147483647]
+TRACE: 2018/10/02 20:33:55 poolboy.go:55: Pool : Stats : A[8194253] C[2147483647]
+TRACE: 2018/10/02 20:33:56 poolboy.go:55: Pool : Stats : A[9662745] C[2147483647]
+TRACE: 2018/10/02 20:33:56 poolboy.go:55: Pool : Stats : A[9670774] C[2147483647]
+TRACE: 2018/10/02 20:33:56 poolboy.go:55: Pool : Stats : A[9671069] C[2147483647]
+TRACE: 2018/10/02 20:33:56 poolboy.go:55: Pool : Stats : A[9671151] C[2147483647]
+TRACE: 2018/10/02 20:33:57 poolboy.go:55: Pool : Stats : A[11127252] C[2147483647]
+TRACE: 2018/10/02 20:33:57 poolboy.go:55: Pool : Stats : A[11288990] C[2147483647]
+TRACE: 2018/10/02 20:33:57 poolboy.go:55: Pool : Stats : A[11291004] C[2147483647]
+TRACE: 2018/10/02 20:33:57 poolboy.go:55: Pool : Stats : A[11292126] C[2147483647]
+TRACE: 2018/10/02 20:33:58 poolboy.go:55: Pool : Stats : A[13036355] C[2147483647]
+TRACE: 2018/10/02 20:33:58 poolboy.go:55: Pool : Stats : A[13177158] C[2147483647]
+TRACE: 2018/10/02 20:33:58 poolboy.go:55: Pool : Stats : A[13191240] C[2147483647]
+TRACE: 2018/10/02 20:33:58 poolboy.go:55: Pool : Stats : A[13265880] C[2147483647]
+TRACE: 2018/10/02 20:33:59 poolboy.go:55: Pool : Stats : A[14869968] C[2147483647]
+TRACE: 2018/10/02 20:33:59 poolboy.go:55: Pool : Stats : A[15002314] C[2147483647]
+TRACE: 2018/10/02 20:33:59 poolboy.go:55: Pool : Stats : A[15025047] C[2147483647]
+TRACE: 2018/10/02 20:33:59 poolboy.go:55: Pool : Stats : A[15087750] C[2147483647]
+TRACE: 2018/10/02 20:34:00 poolboy.go:55: Pool : Stats : A[16561072] C[2147483647]
+TRACE: 2018/10/02 20:34:00 poolboy.go:55: Pool : Stats : A[16705701] C[2147483647]
+TRACE: 2018/10/02 20:34:00 poolboy.go:55: Pool : Stats : A[16725920] C[2147483647]
+TRACE: 2018/10/02 20:34:00 poolboy.go:55: Pool : Stats : A[16806134] C[2147483647]
+TRACE: 2018/10/02 20:34:01 poolboy.go:55: Pool : Stats : A[18233071] C[2147483647]
+TRACE: 2018/10/02 20:34:01 poolboy.go:55: Pool : Stats : A[18395805] C[2147483647]
+TRACE: 2018/10/02 20:34:01 poolboy.go:55: Pool : Stats : A[18424462] C[2147483647]
+TRACE: 2018/10/02 20:34:01 poolboy.go:55: Pool : Stats : A[18515993] C[2147483647]
+TRACE: 2018/10/02 20:34:02 poolboy.go:55: Pool : Stats : A[19770214] C[2147483647]
+TRACE: 2018/10/02 20:34:02 poolboy.go:55: Pool : Stats : A[19952919] C[2147483647]
+TRACE: 2018/10/02 20:34:02 poolboy.go:55: Pool : Stats : A[19979392] C[2147483647]
+TRACE: 2018/10/02 20:34:02 poolboy.go:55: Pool : Stats : A[20131360] C[2147483647]
+goos: darwin
+goarch: amd64
+pkg: github.com/solodynamo/poolboy
+BenchmarkGoroutineWithPoolBoy-4                1        13775773877 ns/op
+PASS
+ok      github.com/solodynamo/poolboy   14.988s
+
+Description: Look at the way all the go routines are allocated compared to without the pool i.e all routines are used at their full potential.

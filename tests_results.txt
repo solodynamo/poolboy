@@ -24,3 +24,19 @@ PASS
 ok      github.com/solodynamo/poolboy   1.095s
 
 Description: Limit the no of OS threads wrt to the CPU cores.
+
+
+2 oct 8:30pm
+=== RUN   TestGopherPool
+____Stats____
+TRACE: 2018/10/02 20:28:17 poolboy.go:55: Pool : Stats : A[959487] C[2147483647]
+TRACE: 2018/10/02 20:28:17 poolboy.go:55: Pool : Stats : A[960346] C[2147483647]
+TRACE: 2018/10/02 20:28:17 poolboy.go:55: Pool : Stats : A[972990] C[2147483647]
+TRACE: 2018/10/02 20:28:17 poolboy.go:55: Pool : Stats : A[992813] C[2147483647]
+--- PASS: TestGopherPool (1.13s)
+        poolboy_test.go:24: PoolCapacity 2147483647
+        poolboy_test.go:25: SwimmingGophers 456077
+        poolboy_test.go:26: FreeGopherSwimmers 2147027570
+        poolboy_test.go:30: memory usage: 60788
+PASS
+ok      github.com/solodynamo/poolboy   1.140s
