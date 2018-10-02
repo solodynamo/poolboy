@@ -9,6 +9,4 @@
 - To run benchmark := go test -test.bench=<benchmarkfnname>
 - To run tests := go test -v
 
-- To do : Replace doubly linked list implementation with slices
-BenchmarkSlices-4       100000000               14.3 ns/op
-BenchmarkLists-4         5000000               275 ns/op
+- To do : Clean routines after defined intervals.

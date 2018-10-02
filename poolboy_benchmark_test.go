@@ -1,5 +1,4 @@
-package poolboy_test;
-
+package poolboy_test
 
 import (
 	"github.com/solodynamo/poolboy"
@@ -29,11 +28,12 @@ func BenchmarkGoroutineWithoutPoolBoy(b *testing.B) {
 }
 
 func BenchmarkGoroutineWithPoolBoy(b *testing.B) {
+	poolboyPool, _ := poolboy.NewPool(poolboy.DefaultRoutinePoolSize, time.Second, logFunc)
 	for i := 0; i < b.N; i++ {
 		var wg sync.WaitGroup
 		for j := 0; j < RunTimes; j++ {
 			wg.Add(1)
-			poolboy.Push(func() {
+			poolboyPool.Push(func() {
 				chillout()
 				wg.Done()
 			})

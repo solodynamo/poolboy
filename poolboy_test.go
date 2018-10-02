@@ -1,13 +1,15 @@
-package poolboy_test;
+package poolboy_test
 
 import (
-	"testing"
-	"github.com/solodynamo/poolboy"
-	"runtime"
 	"fmt"
+	"github.com/solodynamo/poolboy"
+	"log"
+	"runtime"
+	"testing"
+	"time"
 )
 
-var n = 500000;
+var n = 1000000
 
 func doLotOfWorkFun() {
 	var n int
@@ -16,16 +18,20 @@ func doLotOfWorkFun() {
 	}
 }
 
+func logFunc(message string) {
+	log.Println(message)
+}
+
 func TestGopherPool(t *testing.T) {
+	poolboyPool, _ := poolboy.NewPool(poolboy.DefaultRoutinePoolSize, time.Second, logFunc)
 	for i := 0; i < n; i++ {
-		poolboy.Push(doLotOfWorkFun)
+		poolboyPool.Push(doLotOfWorkFun)
 	}
 	fmt.Println("____Stats____")
- 	t.Log("PoolCapacity", poolboy.PoolCapacity())
-	t.Log("SwimmingGophers", poolboy.SwimmingGophers())
-	t.Log("FreeGopherSwimmers", poolboy.FreeGopherSwimmers())
-	poolboy.WaitingGophers()
- 	mem := runtime.MemStats{}
+	t.Log("PoolCapacity", poolboyPool.Capacity())
+	t.Log("SwimmingGophers", poolboyPool.Running())
+	t.Log("FreeGopherSwimmers", poolboyPool.Free())
+	mem := runtime.MemStats{}
 	runtime.ReadMemStats(&mem)
 	t.Log("memory usage:", mem.TotalAlloc/1024)
 }
